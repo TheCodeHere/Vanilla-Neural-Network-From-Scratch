@@ -34,33 +34,16 @@ def GetData():
 
 def Inicialization(NpL):
     #Initialize weights values randomly [0,0.01) and bias values [1's]
-    W1 = np.random.rand(NpL[1], NpL[0]) * 0.01 #np.sqrt(2.0/NpL[0])
+    W1 = np.random.rand(NpL[1], NpL[0]) * 0.01
     b1 = np.ones((NpL[1], 1))
 
-    W2 = np.random.rand(NpL[2], NpL[1]) * 0.01 #np.sqrt(2.0/NpL[1])
+    W2 = np.random.rand(NpL[2], NpL[1]) * 0.01
     b2 = np.ones((NpL[2], 1))
 
     return {'W1': W1, 'b1': b1, 'W2': W2, 'b2': b2}
-'''
-def Ploting(tit = "default", X='X1', Y='X2'):
-    plt.grid(True,linestyle='--')#add grid
 
-    plt.title(tit) #add title
-
-    # add x,y axes labels
-    plt.xlabel(X)
-    plt.ylabel(Y)
-'''
 def Evaluation(testX, testY, params):
-    #One-by-One
-    '''
-    pred_class = []
-    true_class = []
-    for x,y in zip(testX,testY):
-        pred_class.append(np.argmax(ForwardProp(x.reshape(-1, 1), y.reshape(-1, 1), params)['yh']))
-        true_class.append(np.argmax(y.reshape(-1, 1)))
-    '''
-    # All-at-once
+    # All samples-at-once
     pred_class = np.argmax(ForwardProp(testX.T, testY.T, params)['yh'], axis=0) #(1,n)
     true_class = np.argmax(testY.T, axis=0)
 
@@ -79,17 +62,6 @@ def Evaluation(testX, testY, params):
     for i in range(len(precision)):
         print("|   {}   |  {:.2f}%   | {:.2f}% |   {:.2f}   |   {}".format(i,precision[i]*100,recall[i]*100,fscore[i],support[i]))
 
-'''
-def cross_entropy_loss(yh, y, W1, W2, m, lamb):
-    yh_log = np.log2(yh, out=np.zeros_like(yh), where=(yh != 0))# Suppress runtimewarning divide by zero encountered in log
-    loss = -1.0/m * np.dot(y.T,yh_log)
-
-    ## L2-Regularization ###
-    loss += (lamb/(2*m)) * (np.linalg.norm(W1, 'fro')**2 + np.linalg.norm(W2, 'fro')**2)
-
-    cost.append(loss.item())
-'''
-
 def cross_entropy_loss(Yh, Y, W1, W2, n, lamb):
     Yh_log = np.log2(Yh, out=np.zeros_like(Yh), where=(Yh != 0))# Suppress runtimewarning divide by zero encountered in log
     loss = np.multiply(Y.T,Yh_log)
@@ -100,7 +72,6 @@ def cross_entropy_loss(Yh, Y, W1, W2, n, lamb):
 
     return loss / n
 
-
 def Softmax(x):
     '''Squashes a vector in the range (0, 1) and all the resulting elements add up to 1,
         they can be interpreted as class probabilities.'''
@@ -109,16 +80,7 @@ def Softmax(x):
     sum_exp = np.sum(exp,axis=0)
 
     return exp/sum_exp
-'''
-def Softmax(x):
-    #Squashes a vector in the range (0, 1) and all the resulting elements add up to 1,
-    #they can be interpreted as class probabilities.
-    m = np.max(x)
-    exp = np.exp(x-m)
-    sum_exp = np.sum(exp)
 
-    return exp/sum_exp
-'''
 def Relu(x):
     return np.maximum(x, 0)
 
