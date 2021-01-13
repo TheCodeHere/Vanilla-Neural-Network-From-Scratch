@@ -109,7 +109,7 @@ def BackProp(f_prop, params, lamb):
 
     # Hidden Layer 1
     dz1 = np.dot(W2.T, dz2) #(20,10)(10,1)
-    dz1[a1<=0] = 0 #(20,1) [RELU derivation] if z1 > 0 -> a1 > 0, if z1 <= 0 -> a1 = 0
+    dz1[a1<=0] = 0 #(20,1) [RELU derivation] if z1 > 0 -> a1 = 1*a1, if z1 <= 0 -> a1 = 0
 
     dW1 = np.dot(dz1, x.T) #(20,1)(1,784)
     db1 = dz1
