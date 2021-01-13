@@ -184,8 +184,7 @@ def Data_Visualization(testX, testY, params):
     fig = plt.figure()
     ax = fig.gca(projection='3d')
 
-    scatter = ax.scatter(X_pca.T[0], X_pca.T[1], X_pca.T[2], s=5, c=true_class)
-
+    scatter = ax.scatter(X_pca.T[0], X_pca.T[1], X_pca.T[2], s=1, c=true_class)
     legend_classes = ax.legend(*scatter.legend_elements(), loc="upper right", title="Classes")
     ax.add_artist(legend_classes)
 
